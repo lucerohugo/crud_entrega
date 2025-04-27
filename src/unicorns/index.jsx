@@ -1,5 +1,13 @@
-//Punto de entrada, donde se enruta o se exporta el contenedor
-//index.jsx
+import { UnicornProvider } from "../context/UnicornContext";
+import UnicornsContainer from "./UnicornsContainer";
 
-import UnicornsContainer from './UnicornsContainer';
-export default UnicornsContainer;
+
+const UnicornsWrapper = () => {
+  return (
+    <UnicornProvider>
+      <UnicornsContainer />
+    </UnicornProvider>
+  );
+};
+
+export default UnicornsWrapper;

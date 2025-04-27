@@ -1,28 +1,50 @@
-//App.jsx
-import { Card } from 'primereact/card';
-import { Button } from 'primereact/button';
-import { Link } from 'react-router-dom';
+import { Routes, Route, useNavigate } from "react-router-dom";
+import UnicornsContainer from "./unicorns/UnicornsContainer";
+import ProductsPage from "./products";
+import { UnicornProvider } from "./context/UnicornContext";
+import HomeView from "./home/HomeView";
+import { Button } from "primereact/button";
+import "./App.css"; 
 
-const App = () => {
+function App() {
+  const navigate = useNavigate();
+
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh'
-    }}>
-      <Card title="Gestor de Unicornios" style={{ width: '25rem', textAlign: 'center' }}>
-        <p>Bienvenido al sistema de gestión de unicornios.</p>
-        <Link to="/unicornios">
-          <Button 
-            label="Ver Unicornios" 
-            icon="pi pi-arrow-right" 
-            className="p-button-primary" 
-          />
-        </Link>
-      </Card>
+    <div className="p-4">
+      <nav>
+        <Button 
+          label="Inicio" 
+          icon="pi pi-home" 
+          onClick={() => navigate('/')} 
+          className="nav-button"
+        />
+        <Button 
+          label="Unicornios" 
+          icon="pi pi-crown" 
+          onClick={() => navigate('/unicorns')} 
+          className="nav-button"
+        />
+        <Button 
+          label="Productos" 
+          icon="pi pi-shopping-cart" 
+          onClick={() => navigate('/products')}
+        />
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<HomeView />} />
+        <Route
+          path="unicorns"
+          element={
+            <UnicornProvider>
+              <UnicornsContainer />
+            </UnicornProvider>
+          }
+        />
+        <Route path="products" element={<ProductsPage />} />
+      </Routes>
     </div>
   );
-};
+}
 
 export default App;

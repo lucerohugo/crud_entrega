@@ -40,3 +40,25 @@
 .read-the-docs {
   color: #888;
 }
+
+
+/* App.css */
+.nav-button {
+  margin-right: 8px;
+}
+
+/* HomeView.css */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 100px; 
+}
+
+
+.home-card {
+  width: 25rem;
+  text-align: center;
+}
