@@ -1,13 +1,13 @@
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 
-const ProductForm = ({ formData, onChange, onCreate, onSaveEdit, isEditing }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isEditing) {
-      onSaveEdit(); // Si estamos editando, guardamos los cambios
+const ProductForm = ({ formData, onChange, onCreate, onSaveEdit, isEditing }) => { //componente para el formulario de productos
+  const handleSubmit = (e) => {  //manejo del evento de envio del formulario
+    e.preventDefault();  //previene el comportamiento por defecto del formulario
+    if (isEditing) {   //sii estamos editando, llamamos a la funcion de guardar cambios
+      onSaveEdit(); //guardamos los cambios
     } else {
-      onCreate(); // Si estamos creando, agregamos el nuevo producto
+      onCreate(); // Sino agregamos el nuevo producto
     }
   };
 

@@ -1,9 +1,8 @@
-// src/unicorns/UnicornsContainer.jsx
 import React from 'react';
 import UnicornsView from './UnicornsView';
 import useUnicornForm from './useUnicornForm';
 
-const UnicornsContainer = () => {
+const UnicornsContainer = () => {  // Componente contenedor que gestiona la lógica de los unicornios
   const {
     unicorns,
     formData,

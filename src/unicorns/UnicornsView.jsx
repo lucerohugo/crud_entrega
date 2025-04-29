@@ -1,10 +1,9 @@
-// src/unicorns/UnicornsView.jsx
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 
-const UnicornsView = ({
+const UnicornsView = ({  //componente para mostrar la lista de unicornios
   unicorns,
   formData,
   onChange,

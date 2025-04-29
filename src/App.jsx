@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import "./App.css"; 
 
 function App() {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // Hook de React Router para la navegación
 
   return (
     <div className="p-4">

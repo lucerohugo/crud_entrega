@@ -2,10 +2,10 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 
-const ProductsView = ({ products, onDelete, onEdit }) => (
+const ProductsView = ({ products, onDelete, onEdit }) => (  //componente para mostrar la lista de productos
   <div>
     <h2>Lista de Productos</h2>
-    <DataTable value={products} paginator rows={5}>
+    <DataTable value={products} paginator rows={5}>  
       <Column field="name" header="Nombre" />
       <Column field="price" header="Precio" />
       <Column field="category" header="Categoría" />
@@ -16,12 +16,12 @@ const ProductsView = ({ products, onDelete, onEdit }) => (
             <Button
               icon="pi pi-pencil"
               className="p-button-warning p-button-sm"
-              onClick={() => onEdit(rowData.id)} // Editar producto
+              onClick={() => onEdit(rowData.id)} //editar producto
             />
             <Button
               icon="pi pi-trash"
               className="p-button-danger p-button-sm"
-              onClick={() => onDelete(rowData.id)} // Eliminar producto
+              onClick={() => onDelete(rowData.id)} //eliminar producto
             />
           </div>
         )}

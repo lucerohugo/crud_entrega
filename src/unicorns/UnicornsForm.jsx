@@ -5,8 +5,8 @@ import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { useUnicornForm } from "./useUnicornForm";
 
-const UnicornForm = () => {
-  const { formData, onCreate, onUpdate, editingId } = useUnicornForm();
+const UnicornForm = () => {   //componente para el formulario de unicornios
+  const { formData, onCreate, onUpdate, editingId } = useUnicornForm();  
 
   const initialValues = {
     name: formData.name || "",
@@ -15,7 +15,7 @@ const UnicornForm = () => {
     power: formData.power || "",
   };
 
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object({  //esquema de validacion en yup
     name: Yup.string().required("El nombre es requerido"),
     color: Yup.string().required("El color es requerido"),
     age: Yup.number()
@@ -26,16 +26,16 @@ const UnicornForm = () => {
     power: Yup.string().required("El poder es requerido"),
   });
 
-  const handleSubmit = (values) => {
-    const finalValues = {
+  const handleSubmit = (values) => {  //manejo del evento de envio del formulario
+    const finalValues = {  //creamos un nuevo objeto con los valores del formulario
       ...values,
       age: Number(values.age),
     };
 
-    if (editingId) {
-      onUpdate(finalValues);
+    if (editingId) {  //si estamos editando
+      onUpdate(finalValues);  //actualizamos el unicornio
     } else {
-      onCreate(finalValues);
+      onCreate(finalValues);  //creamos un nuevo unicornio
     }
   };
 
