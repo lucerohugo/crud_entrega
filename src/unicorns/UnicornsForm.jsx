@@ -3,39 +3,42 @@ import * as Yup from "yup";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
-import { useUnicornForm } from "./useUnicornForm";
 
-const UnicornForm = () => {   //componente para el formulario de unicornios
-  const { formData, onCreate, onUpdate, editingId } = useUnicornForm();  
+const UnicornForm = ({ createUnicorn, editUnicorn, deleteUnicorn, editingId, formData }) => {
 
   const initialValues = {
     name: formData.name || "",
     color: formData.color || "",
-    age: formData.age || "",
+    age: formData.age ?? null, // 👈 cambio clave aquí
     power: formData.power || "",
   };
 
-  const validationSchema = Yup.object({  //esquema de validacion en yup
+  const validationSchema = Yup.object({
     name: Yup.string().required("El nombre es requerido"),
     color: Yup.string().required("El color es requerido"),
     age: Yup.number()
       .typeError("La edad debe ser un número")
-      .required("La edad es requerida")
-      .positive("La edad debe ser mayor que 0")
-      .integer("La edad debe ser un número entero"),
+      .nullable()
+      .required("La edad es requerida"),
     power: Yup.string().required("El poder es requerido"),
   });
 
-  const handleSubmit = (values) => {  //manejo del evento de envio del formulario
-    const finalValues = {  //creamos un nuevo objeto con los valores del formulario
+  const handleSubmit = (values) => {
+    const finalValues = {
       ...values,
       age: Number(values.age),
     };
 
-    if (editingId) {  //si estamos editando
-      onUpdate(finalValues);  //actualizamos el unicornio
+    if (editingId) {
+      editUnicorn(editingId, finalValues);
     } else {
-      onCreate(finalValues);  //creamos un nuevo unicornio
+      createUnicorn(finalValues);
+    }
+  };
+
+  const handleDelete = () => {
+    if (editingId) {
+      deleteUnicorn(editingId);
     }
   };
 
@@ -49,7 +52,7 @@ const UnicornForm = () => {   //componente para el formulario de unicornios
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ values, errors, touched, handleBlur, setFieldValue, isSubmitting, isValid }) => (
+        {({ values, errors, touched, handleBlur, setFieldValue, isValid }) => (
           <Form className="p-fluid p-formgrid p-grid">
 
             {/* Nombre */}
@@ -90,7 +93,7 @@ const UnicornForm = () => {   //componente para el formulario de unicornios
                 {({ field }) => (
                   <InputNumber
                     value={field.value}
-                    onValueChange={(e) => setFieldValue("age", e.value)}
+                    onValueChange={(e) => setFieldValue("age", e.value ?? null)} // 👈 manejo de null si se borra el número
                     onBlur={handleBlur}
                     placeholder="Edad"
                     useGrouping={false}
@@ -126,7 +129,7 @@ const UnicornForm = () => {   //componente para el formulario de unicornios
                 type="submit"
                 label={editingId ? "Actualizar" : "Crear"}
                 icon={editingId ? "pi pi-check" : "pi pi-plus"}
-                disabled={isSubmitting || !isValid}
+                disabled={!isValid}
               />
             </div>
 

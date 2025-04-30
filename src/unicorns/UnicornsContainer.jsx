@@ -1,29 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import UnicornsView from './UnicornsView';
-import useUnicornForm from './useUnicornForm';
+import { UnicornContext } from '../context/UnicornContext';
 
 const UnicornsContainer = () => {  // Componente contenedor que gestiona la lógica de los unicornios
   const {
-    unicorns,
-    formData,
-    editingId,
-    onChange,
-    onCreate,
-    onEdit,
-    onUpdate,
-    onDelete
-  } = useUnicornForm();
+    unicorns, createUnicorn, editUnicorn, deleteUnicorn
+  } = useContext(UnicornContext);
 
   return (
     <UnicornsView
       unicorns={unicorns}
-      formData={formData}
-      editingId={editingId}
-      onChange={onChange}
-      onCreate={onCreate}
-      onEdit={onEdit}
-      onUpdate={onUpdate}
-      onDelete={onDelete}
+      createUnicorn={createUnicorn}
+      editUnicorn={editUnicorn}
+      deleteUnicorn={deleteUnicorn}
     />
   );
 };
