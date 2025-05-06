@@ -1,81 +1,57 @@
 import { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
-export const UnicornContext = createContext(); //contexto para compartir datos de unicornios
+export const UnicornContext = createContext(); // contexto para compartir datos de unicornios
 
-export const UnicornProvider = ({ children }) => { 
-  const [unicorns, setUnicorns] = useState([]); //estado para almacenar la lista de unicornios
+export const UnicornProvider = ({ children }) => {
+  const [unicorns, setUnicorns] = useState([]); // estado para almacenar la lista de unicornios
 
-  const API_URL = 'https://crudcrud.com/api/5eebcabfe8a54053a7a541ac9294667d/unicorns';   //url de mi api
+  const API_URL = 'https://crudcrud.com/api/6cea492fb44e49da9ee528dcf97a3f1c/unicorns'; // url de mi api
 
-  const getUnicorns = async () => { //obtenemos los unicornios
+  const getUnicorns = async () => { // obtenemos los unicornios
     try {
-      const response = await fetch(API_URL); //obtenemos los unicornios
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
-      const data = await response.json(); //convertimos la respuesta a json
-      setUnicorns(data); //actualizamos el estado con los unicornios obtenidos
+      const response = await axios.get(API_URL);
+      setUnicorns(response.data); // axios ya da la respuesta parseada como json en response.data en su momento
     } catch (error) {
       console.error("Error al obtener unicornios:", error);
     }
   };
 
-  const createUnicorn = async (unicorn) => { //creamos un nuevo unicornio
+  const createUnicorn = async (unicorn) => { // creamos un nuevo unicornio
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(unicorn)
-      });
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
+      await axios.post(API_URL, unicorn);
       await getUnicorns();
     } catch (error) {
       console.error("Error al crear unicornio:", error);
     }
   };
 
-  const editUnicorn = async (id, unicorn) => { //editamos un unicornio
+  const editUnicorn = async (id, unicorn) => { // editamos un unicornio
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(unicorn)
-      });
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
+      await axios.put(`${API_URL}/${id}`, unicorn);
       await getUnicorns();
     } catch (error) {
       console.error("Error al editar unicornio:", error);
     }
   };
 
-  const deleteUnicorn = async (id) => {  //eliminamos un unicornio
+  const deleteUnicorn = async (id) => { // eliminamos un unicornio
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
-      });
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
+      await axios.delete(`${API_URL}/${id}`);
       await getUnicorns();
     } catch (error) {
       console.error("Error al eliminar unicornio:", error);
     }
   };
 
-  useEffect(() => { //cargamos los unicornios al iniciar la aplicacion
+  useEffect(() => { // cargamos los unicornios al iniciar la aplicacion
     getUnicorns();
   }, []);
 
   return (
-    <UnicornContext.Provider value={{ unicorns, getUnicorns, createUnicorn, editUnicorn, deleteUnicorn }}>  
-      {children} 
+    <UnicornContext.Provider value={{ unicorns, getUnicorns, createUnicorn, editUnicorn, deleteUnicorn }}>
+      {children}
     </UnicornContext.Provider>
   );
 };
 
-
-//usamos axios aca

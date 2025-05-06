@@ -27,7 +27,7 @@ git clone https://github.com/lucerohugo/crud_entrega
 2. Entra en el proyecto:
 cd crud_entrega
 3. Instala las dependencias:
-npm install primereact, formik + yup
+npm install primereact, formik + yup, Axios , jspdf y jspdf-autotable
 4. Inicia el proyecto:
 npm run dev
 o
@@ -40,6 +40,9 @@ npm start
 - Formik + Yup
 - PrimeReact
 - LocalStorage 
+- Axios
+- Jsfdp
+- Jspdf-autotable
 
 🛒 Modulo de Productos
 
@@ -50,5 +53,5 @@ npm start
 - Rutas específicas:
   - /productos → Vista principal de productos
 
-👨🏽‍🦲 Hugo Lucero - TP entrega
-pd: no pude hacer andar el yup para campos obligatorios, ejem: no utilizar letras en donde van numeros como en edad etc.Lo demas anda todo y quizas se podrian pulir algunas cosas.
+👨🏽‍🦲 Hugo Lucero - TP entrega 5/5/2025 - React/Formik + Yup/PrimeReact/Axios/Jsfdp + autotable.
+

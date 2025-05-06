@@ -1,72 +1,64 @@
 import { useState, useEffect } from "react";
 import ProductsView from "./ProductsView";
 import ProductForm from "./ProductsForm";
-import { getProductsFromStorage } from "./productsData"; 
+import { getProductsFromStorage } from "./productsData";
 
-const ProductsPage = () => {  //componente principal de la pagina de productos
-  const [products, setProducts] = useState([]);  //estado para almacenar la lista de productos
-  const [formData, setFormData] = useState({ name: "", price: "", category: "" });  //estado para almacenar los datos del formulario
-  const [editProduct, setEditProduct] = useState(null); //para gestionar la edicion
+const ProductsPage = () => {
+  const [products, setProducts] = useState([]);
+  const [formData, setFormData] = useState({ name: "", price: "", category: "" });
+  const [editProduct, setEditProduct] = useState(null);
 
-  useEffect(() => { //cargar los productos desde el local storage
-    const data = getProductsFromStorage();  //obtenemos los productos del local storage
-    setProducts(data);  //actualizamos el estado con los productos obtenidos
+  useEffect(() => {
+    const data = getProductsFromStorage();
+    setProducts(data);
   }, []);
 
-  const handleChange = (e) => {  //actualizar los datos del formulario
-    const { name, value } = e.target;  //obtenemos el nombre y el valor del input
-    setFormData(prev => ({ ...prev, [name]: value }));  //actualizamos el estado del formulario
-  };
-
-  const handleCreate = () => {  //crear un nuevo producto
-    const newProduct = {  //creamos un nuevo producto
-      id: Date.now(),   //generamos un id unico
-      ...formData,   //copiamos los datos del formulario
-      price: Number(formData.price)  //convertimos el precio a numero
+  const handleCreate = (values) => {
+    const newProduct = {
+      id: Date.now(),
+      ...values,
+      price: Number(values.price),
     };
-    const updated = [...products, newProduct];  //actualizamos la lista de productos
-    setProducts(updated);   //actualizamos el estado con la nueva lista
-    setFormData({ name: "", price: "", category: "" });  //limpiamos el formulario
+    const updated = [...products, newProduct];
+    setProducts(updated);
+    setFormData({ name: "", price: "", category: "" });
   };
 
-  const handleDelete = (id) => {  //eliminar un producto
-    const updated = products.filter(p => p.id !== id);  //filtramos la lista de productos
-    setProducts(updated);  //actualizamos el estado con la nueva lista
+  const handleDelete = (id) => {
+    const updated = products.filter((p) => p.id !== id);
+    setProducts(updated);
   };
 
-  const handleEdit = (id) => { //editar un producto
-    const productToEdit = products.find(p => p.id === id); //buscamos el producto a editar
-    setEditProduct(productToEdit);  //actualizamos el estado con el producto a editar
-    setFormData({  //actualizamos el formulario con los datos del producto a editar
-      name: productToEdit.name,  
-      price: productToEdit.price,
-      category: productToEdit.category
+  const handleEdit = (id) => {
+    const productToEdit = products.find((p) => p.id === id);
+    setEditProduct(productToEdit);
+    setFormData({
+      name: productToEdit.name || "",
+      price: productToEdit.price || "",
+      category: productToEdit.category || "",
     });
   };
 
-  const handleSaveEdit = () => {  //guardar los cambios de la edicion
-    const updatedProducts = products.map(product =>  //actualizamos la lista de productos
-      product.id === editProduct.id ? { ...product, ...formData, price: Number(formData.price) } : product  
+  const handleSaveEdit = (values) => {
+    const updatedProducts = products.map((product) =>
+      product.id === editProduct.id
+        ? { ...product, ...values, price: Number(values.price) }
+        : product
     );
-    setProducts(updatedProducts);  //actualizamos el estado con la nueva lista
-    setEditProduct(null);  //limpiamos el estado de edicion
-    setFormData({ name: "", price: "", category: "" });  //limpiamos el formulario
+    setProducts(updatedProducts);
+    setEditProduct(null);
+    setFormData({ name: "", price: "", category: "" });
   };
 
   return (
     <>
-      <ProductForm 
-        formData={formData} 
-        onChange={handleChange} 
-        onCreate={handleCreate} 
-        onSaveEdit={handleSaveEdit} 
-        isEditing={editProduct !== null} 
+      <ProductForm
+        initialValues={formData}
+        onCreate={handleCreate}
+        onSaveEdit={handleSaveEdit}
+        isEditing={editProduct !== null}
       />
-      <ProductsView 
-        products={products} 
-        onDelete={handleDelete} 
-        onEdit={handleEdit} 
-      />
+      <ProductsView products={products} onDelete={handleDelete} onEdit={handleEdit} />
     </>
   );
 };

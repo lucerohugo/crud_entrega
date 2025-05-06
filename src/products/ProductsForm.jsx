@@ -1,52 +1,70 @@
-import { InputText } from "primereact/inputtext";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "primereact/button";
+import * as Yup from "yup";
 
-const ProductForm = ({ formData, onChange, onCreate, onSaveEdit, isEditing }) => { //componente para el formulario de productos
-  const handleSubmit = (e) => {  //manejo del evento de envio del formulario
-    e.preventDefault();  //previene el comportamiento por defecto del formulario
-    if (isEditing) {   //sii estamos editando, llamamos a la funcion de guardar cambios
-      onSaveEdit(); //guardamos los cambios
+const ProductForm = ({ onCreate, onSaveEdit, isEditing, initialValues }) => {
+  const validationSchema = Yup.object({
+    name: Yup.string().required("El nombre es obligatorio"),
+    price: Yup.number()
+      .typeError("El precio debe ser un número") // tipo nro
+      .positive("El precio debe ser positivo") //que sea positivos
+      .required("El precio es obligatorio"), //que sea obligatorio
+    category: Yup.string().required("La categoría es obligatoria"),
+  });
+
+  const handleSubmit = (values, { resetForm }) => {
+    if (isEditing) {
+      onSaveEdit(values);
     } else {
-      onCreate(); // Sino agregamos el nuevo producto
+      onCreate(values);
     }
+    resetForm();
   };
 
   return (
     <div className="p-4">
-      <h2> Gestión de Unicornios </h2>
-    <div className="p-fluid p-formgrid p-grid">
-      <div className="p-field p-col-12 p-md-4">
-        <InputText
-          name="name"
-          value={formData.name}
-          onChange={onChange}
-          placeholder="Nombre"
-        />
-      </div>
-      <div className="p-field p-col-12 p-md-4">
-        <InputText
-          name="price"
-          value={formData.price}
-          onChange={onChange}
-          placeholder="Precio"
-        />
-      </div>
-      <div className="p-field p-col-12 p-md-4">
-        <InputText
-          name="category"
-          value={formData.category}
-          onChange={onChange}
-          placeholder="Categoría"
-        />
-      </div>
-      <div className="p-field p-col-12 p-md-12">
-        <Button 
-          label={isEditing ? "Guardar Cambios" : "Agregar Producto"} 
-          icon="pi pi-plus" 
-          onClick={handleSubmit} 
-        />
-      </div>
-    </div>
+      <h2>Gestión de Unicornios</h2>
+      <Formik
+        enableReinitialize
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting }) => (
+          <Form className="p-fluid p-formgrid p-grid">
+            <div className="p-field p-col-12 p-md-4">
+              <Field name="name" placeholder="Nombre" className="p-inputtext" />
+              <ErrorMessage name="name" component="small" className="p-error" />
+            </div>
+
+            <div className="p-field p-col-12 p-md-4">
+              {/* input tipo numero para que solamente entren nros y no letras */}
+              <Field
+                name="price"
+                placeholder="Precio"
+                className="p-inputtext"
+                type="number" //solamente tipo numerico
+                min="0" //solo valores positivos
+              />
+              <ErrorMessage name="price" component="small" className="p-error" />
+            </div>
+
+            <div className="p-field p-col-12 p-md-4">
+              <Field name="category" placeholder="Categoría" className="p-inputtext" />
+              <ErrorMessage name="category" component="small" className="p-error" />
+            </div>
+
+            <div className="p-field p-col-12 p-md-12">
+              <Button
+                type="submit"
+                label={isEditing ? "Guardar Cambios" : "Agregar Producto"}
+                icon={isEditing ? "pi pi-save" : "pi pi-plus"}
+                disabled={isSubmitting}
+              />
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

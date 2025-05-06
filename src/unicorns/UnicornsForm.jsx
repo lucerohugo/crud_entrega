@@ -4,12 +4,12 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 
-const UnicornForm = ({ createUnicorn, editUnicorn, deleteUnicorn, editingId, formData }) => {
+const UnicornForm = ({ createUnicorn, editUnicorn, deleteUnicorn, editingId, formData }) => {  
 
   const initialValues = {
     name: formData.name || "",
     color: formData.color || "",
-    age: formData.age ?? null, // 👈 cambio clave aquí
+    age: formData.age ?? null, 
     power: formData.power || "",
   };
 
@@ -44,7 +44,7 @@ const UnicornForm = ({ createUnicorn, editUnicorn, deleteUnicorn, editingId, for
 
   return (
     <div className="p-4">
-      <h2>{editingId ? "Editar Unicornio" : "Crear Unicornio"}</h2>
+      <h2>{editingId ? "Editar Unicornio" : ""}</h2>
 
       <Formik
         initialValues={initialValues}
@@ -127,7 +127,7 @@ const UnicornForm = ({ createUnicorn, editUnicorn, deleteUnicorn, editingId, for
             <div className="p-field p-col-12 p-md-4">
               <Button
                 type="submit"
-                label={editingId ? "Actualizar" : "Crear"}
+                label={editingId ? "Actualizar" : "Agregar Unicornio"}
                 icon={editingId ? "pi pi-check" : "pi pi-plus"}
                 disabled={!isValid}
               />

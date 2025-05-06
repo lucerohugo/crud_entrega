@@ -4,12 +4,16 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import UnicornForm from './UnicornsForm';
+import { exportPDF } from '../utils/exportPDF';
 
 const UnicornsView = ({  //componente para mostrar la lista de unicornios
   unicorns, createUnicorn, editUnicorn, deleteUnicorn
 }) => {
   const[editingId, setEditingId] = useState(null); //estado para almacenar el id del unicornio que estamos editando
   const[formData, setFormData] = useState({}); //estado para almacenar los datos del formulario
+
+  const columns = ['Id','Nombre', 'Color', 'Edad', 'Poder']; //mi columna para exportar el pdf
+
   const onDelete = (id) => {  //manejo del evento de eliminacion
     deleteUnicorn(id);  //eliminamos el unicornio
   }
@@ -44,6 +48,7 @@ const UnicornsView = ({  //componente para mostrar la lista de unicornios
             <>
               <Button icon="pi pi-pencil" className="p-button-sm p-mr-2" onClick={() => onEdit(rowData)} />
               <Button icon="pi pi-trash" className="p-button-sm p-button-danger" onClick={() => onDelete(rowData._id)} />
+              <Button icon="pi pi-file-export" className="p-button-sm p-button-success" onClick={() => exportPDF(unicorns, 'Listado de Unicornios', columns)} /> 
             </>
           )}
         />
